@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from 'react-router-dom';
-import { IntlProvider } from "react-intl";
+import { addLocaleData, IntlProvider } from "react-intl";
+import es from 'react-intl/locale-data/es';
 
 // Main app component
 import App from "./components/App";
@@ -16,12 +17,14 @@ import "./index.css";
 import messages_en from "./translations/en.json";
 import messages_es from "./translations/es.json";
 
+addLocaleData([...es]);
+
 const messages = {
     'en': messages_en,
     'es': messages_es
 };
 
-const language = 'en';
+const language = 'es';
 
 // Add IntlProvider to make the internationalization functions visible in all
 // our components.
