@@ -93,8 +93,8 @@ class EnhancedTable extends Component {
 
     const data =
       order === 'desc'
-        ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-        : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
+        ? this.state.data.sort((a, b) => (b[orderBy].toLowerCase() < a[orderBy].toLowerCase() ? -1 : 1))
+        : this.state.data.sort((a, b) => (a[orderBy].toLowerCase() < b[orderBy].toLowerCase() ? -1 : 1));
 
     this.setState({ data, order, orderBy });
   };
