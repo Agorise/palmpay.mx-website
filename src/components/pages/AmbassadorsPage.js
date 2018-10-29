@@ -138,6 +138,7 @@ class AmbassadorsPage extends Component {
         searchText: app.addLocationSearchText(ambassador.cities),
         value: app.addLocation(ambassador.cities)
       }
+      ambassador.telegram_original = ambassador.telegram;
       ambassador.telegram = {
         searchText: ambassador.telegram,
         value: (
@@ -147,7 +148,7 @@ class AmbassadorsPage extends Component {
             rel="noopener noreferrer"
           >{ambassador.telegram}</a>
         )
-      }
+      };
       ambassador.map = app.addMapButton(ambassador, ambassador.cities);
       ambassador.link = <a target="_blank" rel="noopener noreferrer"
         href={ambassador.url}>{stripProtocol(ambassador.url)}</a>;
@@ -266,7 +267,13 @@ class AmbassadorsPage extends Component {
           const infoDescription = <div>
           <div><b>Location</b>: {(location.name).replace(/(^|\s)\S/g, l => l.toUpperCase())} - {countries.getName(location.country)}</div>
           {(ambassador.nickname) && (<div><b>Nickname</b>: {ambassador.nickname}</div>)}
-          {(ambassador.telegram) && (<div><b>Telegram</b>: {ambassador.telegram}</div>)}
+          {(ambassador.telegram_original) && (<div><b>Telegram</b>: 
+            <a
+              href={`https://t.me/${(ambassador.telegram_original.trim().charAt(0) === '@') ? ambassador.telegram_original.trim().slice(1): ambassador.telegram_original.trim()}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >{ambassador.telegram_original}</a>
+            </div>)}
           {(ambassador.keybase) && (<div><b>Keybase</b>: {ambassador.keybase}</div>)}
           {(ambassador.email) && (<div><b>Email</b>: {ambassador.email}</div>)}
           {(ambassador.phone) && (<div><b>Phone</b>: {ambassador.phone}</div>)}
@@ -312,7 +319,11 @@ class AmbassadorsPage extends Component {
         const infoDescription = <div>
         <div><b>Location</b>: {(city.name).replace(/(^|\s)\S/g, l => l.toUpperCase())} - {countries.getName(city.country)}</div>
         {(ambassador.nickname) && (<div><b>Nickname</b>: {ambassador.nickname}</div>)}
-        {(ambassador.telegram) && (<div><b>Telegram</b>: {ambassador.telegram}</div>)}
+        {(ambassador.telegram_original) && (<div><b>Telegram</b>: <a
+          href={`https://t.me/${(ambassador.telegram_original.trim().charAt(0) === '@') ? ambassador.telegram_original.trim().slice(1): ambassador.telegram_original.trim()}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >{ambassador.telegram_original}</a></div>)}
         {(ambassador.keybase) && (<div><b>Keybase</b>: {ambassador.keybase}</div>)}
         {(ambassador.email) && (<div><b>Email</b>: {ambassador.email}</div>)}
         {(ambassador.phone) && (<div><b>Phone</b>: {ambassador.phone}</div>)}
