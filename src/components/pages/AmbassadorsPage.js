@@ -138,6 +138,16 @@ class AmbassadorsPage extends Component {
         searchText: app.addLocationSearchText(ambassador.cities),
         value: app.addLocation(ambassador.cities)
       }
+      ambassador.telegram = {
+        searchText: ambassador.telegram,
+        value: (
+          <a
+            href={`https://t.me/${(ambassador.telegram.trim().charAt(0) === '@') ? ambassador.telegram.trim().slice(1): ambassador.telegram.trim()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >{ambassador.telegram}</a>
+        )
+      }
       ambassador.map = app.addMapButton(ambassador, ambassador.cities);
       ambassador.link = <a target="_blank" rel="noopener noreferrer"
         href={ambassador.url}>{stripProtocol(ambassador.url)}</a>;
