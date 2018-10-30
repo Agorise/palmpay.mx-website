@@ -150,8 +150,13 @@ class AmbassadorsPage extends Component {
         )
       };
       ambassador.map = app.addMapButton(ambassador, ambassador.cities);
-      ambassador.link = <a target="_blank" rel="noopener noreferrer"
-        href={ambassador.url}>{stripProtocol(ambassador.url)}</a>;
+      ambassador.link = {
+        searchText: stripProtocol(ambassador.url),
+        value: (
+          <a target="_blank" rel="noopener noreferrer"
+          href={ambassador.url}>{stripProtocol(ambassador.url)}</a>
+        )
+      };
     });
 
     // Once both return, update the state
@@ -267,7 +272,7 @@ class AmbassadorsPage extends Component {
           const infoDescription = <div>
           <div><b>Location</b>: {(location.name).replace(/(^|\s)\S/g, l => l.toUpperCase())} - {countries.getName(location.country)}</div>
           {(ambassador.nickname) && (<div><b>Nickname</b>: {ambassador.nickname}</div>)}
-          {(ambassador.telegram_original) && (<div><b>Telegram</b>: 
+          {(ambassador.telegram_original) && (<div><b>Telegram</b>:
             <a
               href={`https://t.me/${(ambassador.telegram_original.trim().charAt(0) === '@') ? ambassador.telegram_original.trim().slice(1): ambassador.telegram_original.trim()}`}
               target="_blank"

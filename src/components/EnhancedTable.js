@@ -96,22 +96,12 @@ class EnhancedTable extends Component {
         ? this.state.data.sort((a, b) => {
           console.log(a[orderBy]);
           console.log(b[orderBy]);
-          if(a[orderBy].hasOwnProperty('searchText')){
-            a[orderBy] = a[orderBy].searchText;
-          }
-          if(b[orderBy].hasOwnProperty('searchText')){
-            b[orderBy] = b[orderBy].searchText;
-          }
-          return b[orderBy].toLowerCase() < a[orderBy].toLowerCase() ? -1 : 1;
+          return ((b[orderBy].hasOwnProperty('searchText') ?  b[orderBy].searchText.toLowerCase() : b[orderBy].toLowerCase()) <
+            (a[orderBy].hasOwnProperty('searchText') ?  a[orderBy].searchText.toLowerCase() : a[orderBy].toLowerCase()) ? -1 : 1);
         })
         : this.state.data.sort((a, b) => {
-          if(a[orderBy].hasOwnProperty('searchText')){
-            a[orderBy] = a[orderBy].searchText;
-          }
-          if(b[orderBy].hasOwnProperty('searchText')){
-            b[orderBy] = b[orderBy].searchText;
-          }
-          return (a[orderBy].toLowerCase() < b[orderBy].toLowerCase() ? -1 : 1);
+          return ((a[orderBy].hasOwnProperty('searchText') ?  a[orderBy].searchText.toLowerCase() : a[orderBy].toLowerCase()) <
+          (b[orderBy].hasOwnProperty('searchText') ?  b[orderBy].searchText.toLowerCase() : b[orderBy].toLowerCase()) ? -1 : 1);
         });
 
     this.setState({ data, order, orderBy });
