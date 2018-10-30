@@ -93,8 +93,22 @@ class EnhancedTable extends Component {
 
     const data =
       order === 'desc'
-        ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-        : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
+        ? this.state.data.sort((a, b) => {
+          let a_value = a[orderBy];
+          let b_value = b[orderBy];
+          a_value = a_value.hasOwnProperty('searchText') ?  a_value.searchText.toLowerCase() : a_value.toLowerCase();
+          b_value = b_value.hasOwnProperty('searchText') ?  b_value.searchText.toLowerCase() : b_value.toLowerCase();
+          return (b_value < a_value) ? -1 : 1;
+        })
+        : this.state.data.sort((a, b) => {
+          let a_value = a[orderBy];
+          let b_value = b[orderBy];
+          a_value = a_value.hasOwnProperty('searchText') ?  a_value.searchText.toLowerCase() : a_value.toLowerCase();
+          b_value = b_value.hasOwnProperty('searchText') ?  b_value.searchText.toLowerCase() : b_value.toLowerCase();
+          if(a_value.trim() === '') a_value = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
+          if(b_value.trim() === '') b_value = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
+          return (a_value < b_value) ? -1 : 1;
+        });
 
     this.setState({ data, order, orderBy });
   };

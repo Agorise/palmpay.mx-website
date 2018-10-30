@@ -10,6 +10,7 @@ import EnhancedTable from '../EnhancedTable';
 import Footer from '../Footer';
 import LayerMap from '../LayerMap';
 import PreviewMap from '../PreviewMap';
+import { stripProtocol } from '../../utils/url';
 
 // Helpers
 import Client from '../../utils/feathers';
@@ -25,7 +26,6 @@ import "./MerchantsPage.css";
 const countries = Countries();
 
 const centerStyle = {
-  textAlign: 'center',
   marginTop: 20,
   marginBottom: 20
 };
@@ -135,12 +135,28 @@ class MerchantsPage extends Component {
     const markers = [];
     result.data.forEach(ambassador => {
       ambassador.cities.forEach(function(city) {
+        const infoDescription = <div>
+        <div><b>Location</b>: {(city.name).replace(/(^|\s)\S/g, l => l.toUpperCase())} - {countries.getName(city.country)}</div>
+        {(ambassador.nickname) && (<div><b>Nickname</b>: {ambassador.nickname}</div>)}
+        {(ambassador.telegram) && (<div><b>Telegram</b>:
+          <a
+            href={`https://t.me/${(ambassador.telegram.trim().charAt(0) === '@') ? ambassador.telegram.trim().slice(1): ambassador.telegram.trim()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >{ambassador.telegram}</a>
+          </div>)}
+        {(ambassador.keybase) && (<div><b>Keybase</b>: {ambassador.keybase}</div>)}
+        {(ambassador.email) && (<div><b>Email</b>: {ambassador.email}</div>)}
+        {(ambassador.phone) && (<div><b>Phone</b>: {ambassador.phone}</div>)}
+        {(ambassador.url) && (<div><b>URL:</b>: <a target="_blank" rel="noopener noreferrer"
+          href={ambassador.url}>{stripProtocol(ambassador.url)}</a></div>)}
+        </div>;
         const marker = {
           lat: city.lat,
           lng: city.lon,
           withInfo: true,
           infoTitle: ambassador.nickname,
-          infoDescription: `${city.name} - ${city.country}`,
+          infoDescription: infoDescription,
         };
         markers.push(marker);
       });
@@ -183,6 +199,10 @@ class MerchantsPage extends Component {
     });
 
     result.data.map(merchant => {
+      const infoDescription = <div>
+        <div><b>Address</b>: {merchant.address}</div>
+        {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
+        </div>;
       merchant.map = <Button
         className="App-button"
         variant="contained"
@@ -192,7 +212,7 @@ class MerchantsPage extends Component {
         }}
         onClick={() => this.openMaps(
           merchant.name,
-          `${merchant.address}, ${merchant.city} - ${merchant.country}`,
+          infoDescription,
           merchant.lat,
           merchant.lon
         )}
@@ -239,12 +259,16 @@ class MerchantsPage extends Component {
     const { ambassadorsMarkers, merchantsSearch } = this.state;
 
     const merchantMarkers = merchantsSearch.map(merchant => {
+      const infoDescription = <div>
+      <div><b>Address</b>: {merchant.address}</div>
+      {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
+      </div>;
       const marker = {
         lat: merchant.lat,
         lng: merchant.lon,
         withInfo: true,
         infoTitle: merchant.name,
-        infoDescription: `${merchant.address}, ${merchant.city} - ${merchant.country}`,
+        infoDescription: infoDescription,
       };
       return marker;
     });
@@ -254,18 +278,18 @@ class MerchantsPage extends Component {
       <div>
         <AppHeader />
 
-      <section data-spy="scroll" data-target="#mainNav" id="services">
+      <section data-spy="scroll" data-target="#mainNav" id="services" className="merchants_services" >
       <div className="containerfix">
       <div className="row">
       <div className="col-md-10 mx-md-auto">
 
-        <h2 className="ambassadorsTitle" style={centerStyle}><FormattedMessage id="merchants.title" /></h2>
+        <h2 className="ambassadorsTitle merchantsMargin" style={centerStyle}><FormattedMessage id="merchants.title" /></h2>
         { /* Conditional Rendering */}
             {(this.state.loading) ? (
               <img src={LoadingGif} alt="Loading" style={loadingStyle} />
         ): (
           <div>
-            <p style={{ textAlign: 'left', marginLeft: 20, marginRight: 20 }}>
+            <p style={{ textAlign: 'left', marginRight: 20 }}>
               <FormattedHTMLMessage id="merchants.description1" />
               <Link to="/ambs">
                 <FormattedMessage id="merchants.ambassadors_link_description" />

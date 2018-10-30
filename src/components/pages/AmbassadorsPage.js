@@ -24,7 +24,6 @@ import LoadingGif from '../../assets/img/loading_icon.gif';
 const countries = Countries();
 
 const centerStyle = {
-  textAlign: 'center',
   marginTop: 20,
   marginBottom: 20
 };
@@ -139,9 +138,25 @@ class AmbassadorsPage extends Component {
         searchText: app.addLocationSearchText(ambassador.cities),
         value: app.addLocation(ambassador.cities)
       }
-      ambassador.map = app.addMapButton(ambassador.nickname, ambassador.cities);
-      ambassador.link = <a target="_blank" rel="noopener noreferrer"
-        href={ambassador.url}>{stripProtocol(ambassador.url)}</a>;
+      ambassador.telegram_original = ambassador.telegram;
+      ambassador.telegram = {
+        searchText: ambassador.telegram,
+        value: (
+          <a
+            href={`https://t.me/${(ambassador.telegram.trim().charAt(0) === '@') ? ambassador.telegram.trim().slice(1): ambassador.telegram.trim()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >{ambassador.telegram}</a>
+        )
+      };
+      ambassador.map = app.addMapButton(ambassador, ambassador.cities);
+      ambassador.link = {
+        searchText: stripProtocol(ambassador.url),
+        value: (
+          <a target="_blank" rel="noopener noreferrer"
+          href={ambassador.url}>{stripProtocol(ambassador.url)}</a>
+        )
+      };
     });
 
     // Once both return, update the state
@@ -185,12 +200,16 @@ class AmbassadorsPage extends Component {
     });
 
     const markers = result.data.map(merchant => {
+      const infoDescription = <div>
+      <div><b>Address</b>: {merchant.address}</div>
+      {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
+      </div>;
       const marker = {
         lat: merchant.lat,
         lng: merchant.lon,
         withInfo: true,
         infoTitle: merchant.name,
-        infoDescription: `${merchant.address}, ${merchant.city} - ${merchant.country}`,
+        infoDescription: infoDescription,
       };
       return marker;
     });
@@ -245,11 +264,28 @@ class AmbassadorsPage extends Component {
     );
   }
 
-  addMapButton(nickname, cities){
+  addMapButton(ambassador, cities){
     const app = this;
     return (
       <span>
-        {cities.map((location, index) => (
+        {cities.map((location, index) => {
+          const infoDescription = <div>
+          <div><b>Location</b>: {(location.name).replace(/(^|\s)\S/g, l => l.toUpperCase())} - {countries.getName(location.country)}</div>
+          {(ambassador.nickname) && (<div><b>Nickname</b>: {ambassador.nickname}</div>)}
+          {(ambassador.telegram_original) && (<div><b>Telegram</b>:
+            <a
+              href={`https://t.me/${(ambassador.telegram_original.trim().charAt(0) === '@') ? ambassador.telegram_original.trim().slice(1): ambassador.telegram_original.trim()}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >{ambassador.telegram_original}</a>
+            </div>)}
+          {(ambassador.keybase) && (<div><b>Keybase</b>: {ambassador.keybase}</div>)}
+          {(ambassador.email) && (<div><b>Email</b>: {ambassador.email}</div>)}
+          {(ambassador.phone) && (<div><b>Phone</b>: {ambassador.phone}</div>)}
+          {(ambassador.url) && (<div><b>URL:</b>: <a target="_blank" rel="noopener noreferrer"
+            href={ambassador.url}>{stripProtocol(ambassador.url)}</a></div>)}
+          </div>;
+          return (
           <div key={index}>
             <Button
               className="App-button"
@@ -261,15 +297,15 @@ class AmbassadorsPage extends Component {
                   marginBottom: 5
               }}
               onClick={() => app.openMaps(
-                nickname,
-                `${(location.name).replace(/(^|\s)\S/g, l => l.toUpperCase())} - ${countries.getName(location.country)}`,
+                ambassador.nickname,
+                infoDescription,
                 location.lat,
                 location.lon
               )}
             >Show on Map
             </Button>
           </div>
-        ))}
+        );})}
       </span>
     );
   }
@@ -285,12 +321,26 @@ class AmbassadorsPage extends Component {
     const ambassadorsMarkers = [];
     ambassadorsSearch.forEach(ambassador => {
       ambassador.cities.forEach(function(city) {
+        const infoDescription = <div>
+        <div><b>Location</b>: {(city.name).replace(/(^|\s)\S/g, l => l.toUpperCase())} - {countries.getName(city.country)}</div>
+        {(ambassador.nickname) && (<div><b>Nickname</b>: {ambassador.nickname}</div>)}
+        {(ambassador.telegram_original) && (<div><b>Telegram</b>: <a
+          href={`https://t.me/${(ambassador.telegram_original.trim().charAt(0) === '@') ? ambassador.telegram_original.trim().slice(1): ambassador.telegram_original.trim()}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >{ambassador.telegram_original}</a></div>)}
+        {(ambassador.keybase) && (<div><b>Keybase</b>: {ambassador.keybase}</div>)}
+        {(ambassador.email) && (<div><b>Email</b>: {ambassador.email}</div>)}
+        {(ambassador.phone) && (<div><b>Phone</b>: {ambassador.phone}</div>)}
+        {(ambassador.url) && (<div><b>URL:</b>: <a target="_blank" rel="noopener noreferrer"
+          href={ambassador.url}>{stripProtocol(ambassador.url)}</a></div>)}
+        </div>;
         const marker = {
           lat: city.lat,
           lng: city.lon,
           withInfo: true,
           infoTitle: ambassador.nickname,
-          infoDescription: `${city.name} - ${city.country}`,
+          infoDescription: infoDescription,
         };
         ambassadorsMarkers.push(marker);
       });
@@ -313,7 +363,7 @@ class AmbassadorsPage extends Component {
               <img src={LoadingGif} alt="Loading" style={loadingStyle} />
         ): (
           <div>
-            <p style={{ textAlign: 'left', marginLeft: 20, marginRight: 20 }}>
+            <p style={{ textAlign: 'left', marginRight: 20 }}>
               <FormattedHTMLMessage id="ambassadors.description1" />
               <Link to="/merchants">
                 <FormattedMessage id="ambassadors.merchants_link_description" />

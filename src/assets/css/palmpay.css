@@ -365,3 +365,35 @@ ul.social-buttons {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+.ambassadorsTitle {
+  margin-top: 0 !important;
+}
+
+@media screen and (min-width: 328px) {
+  .ambassadorsTitle {
+    font-weight: bold;
+  }
+  .marketingMargin {
+    font-weight: bold;
+  }
+  .merchantsMargin {
+    font-weight: bold;
+  }
+}
+
+th {
+  text-align: left !important;
+}
+
+#mainNav p {
+  margin-left: 0 !important;
+
+}
+
+header .col-md-10, header .col-md-10 > div {
+  padding-left: 0 !important;
+}
+
+.search-books-input-wrapper > div {
+  margin-left: 0 !important;
+}
