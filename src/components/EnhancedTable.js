@@ -94,14 +94,21 @@ class EnhancedTable extends Component {
     const data =
       order === 'desc'
         ? this.state.data.sort((a, b) => {
-          console.log(a[orderBy]);
-          console.log(b[orderBy]);
-          return ((b[orderBy].hasOwnProperty('searchText') ?  b[orderBy].searchText.toLowerCase() : b[orderBy].toLowerCase()) <
-            (a[orderBy].hasOwnProperty('searchText') ?  a[orderBy].searchText.toLowerCase() : a[orderBy].toLowerCase()) ? -1 : 1);
+          let a_value = a[orderBy];
+          let b_value = b[orderBy];
+          a_value = a_value.hasOwnProperty('searchText') ?  a_value.searchText.toLowerCase() : a_value.toLowerCase();
+          b_value = b_value.hasOwnProperty('searchText') ?  b_value.searchText.toLowerCase() : b_value.toLowerCase();
+          return (b_value < a_value) ? -1 : 1;
         })
         : this.state.data.sort((a, b) => {
-          return ((a[orderBy].hasOwnProperty('searchText') ?  a[orderBy].searchText.toLowerCase() : a[orderBy].toLowerCase()) <
-          (b[orderBy].hasOwnProperty('searchText') ?  b[orderBy].searchText.toLowerCase() : b[orderBy].toLowerCase()) ? -1 : 1);
+          let a_value = a[orderBy];
+          let b_value = b[orderBy];
+          a_value = a_value.hasOwnProperty('searchText') ?  a_value.searchText.toLowerCase() : a_value.toLowerCase();
+          b_value = b_value.hasOwnProperty('searchText') ?  b_value.searchText.toLowerCase() : b_value.toLowerCase();
+          console.log(a_value);
+          if(a_value.trim() === '') a_value = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
+          if(b_value.trim() === '') b_value = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
+          return (a_value < b_value) ? -1 : 1;
         });
 
     this.setState({ data, order, orderBy });
