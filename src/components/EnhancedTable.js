@@ -105,7 +105,6 @@ class EnhancedTable extends Component {
           let b_value = b[orderBy];
           a_value = a_value.hasOwnProperty('searchText') ?  a_value.searchText.toLowerCase() : a_value.toLowerCase();
           b_value = b_value.hasOwnProperty('searchText') ?  b_value.searchText.toLowerCase() : b_value.toLowerCase();
-          console.log(a_value);
           if(a_value.trim() === '') a_value = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
           if(b_value.trim() === '') b_value = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
           return (a_value < b_value) ? -1 : 1;
