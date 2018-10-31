@@ -87,6 +87,8 @@ class EnhancedTable extends Component {
     const orderBy = property;
     let order = 'desc';
 
+    if(orderBy === 'map') return;
+
     if (this.state.orderBy === property && this.state.order === 'desc') {
       order = 'asc';
     }
