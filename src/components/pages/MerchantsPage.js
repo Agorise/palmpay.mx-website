@@ -54,8 +54,7 @@ const mapsStyles = {
 const columnData = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'address', numeric: false, disablePadding: true, label: 'Address' },
-  { id: 'city', numeric: false, disablePadding: false, label: 'City' },
-  { id: 'country', numeric: false, disablePadding: false, label: 'Country' },
+  { id: 'location', numeric: false, disablePadding: false, label: 'Location' },
   { id: 'map', numeric: false, disablePadding: false, label: 'Maps', disableSearch: true}
 ];
 
@@ -203,6 +202,10 @@ class MerchantsPage extends Component {
         <div><b>Address</b>: {merchant.address}</div>
         {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
         </div>;
+      merchant.location = {
+        searchText: `${merchant.country} - ${merchant.city}`,
+        value: (merchant.city) ? `${merchant.city} - ${merchant.country}`: merchant.country
+      }
       merchant.map = <Button
         className="App-button"
         variant="contained"

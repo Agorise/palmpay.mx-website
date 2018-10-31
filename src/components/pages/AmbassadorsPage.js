@@ -394,7 +394,7 @@ class AmbassadorsPage extends Component {
                 <EnhancedTable
                   columnData={columnData}
                   data={data}
-                  orderBy="nickname"
+                  orderBy="location"
                   showSearchColumns={false}
                   rowsPerPage={10}
                   isAdmin={false}
