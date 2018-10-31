@@ -94,15 +94,15 @@ class EnhancedTable extends Component {
     const data =
       order === 'desc'
         ? this.state.data.sort((a, b) => {
-          let a_value = a[orderBy];
-          let b_value = b[orderBy];
+          let a_value = (a[orderBy] !== undefined) ? a[orderBy]: '';
+          let b_value = (b[orderBy] !== undefined) ? b[orderBy]: '';
           a_value = a_value.hasOwnProperty('searchText') ?  a_value.searchText.toLowerCase() : a_value.toLowerCase();
           b_value = b_value.hasOwnProperty('searchText') ?  b_value.searchText.toLowerCase() : b_value.toLowerCase();
           return (b_value < a_value) ? -1 : 1;
         })
         : this.state.data.sort((a, b) => {
-          let a_value = a[orderBy];
-          let b_value = b[orderBy];
+          let a_value = (a[orderBy] !== undefined) ? a[orderBy]: '';
+          let b_value = (b[orderBy] !== undefined) ? b[orderBy]: '';
           a_value = a_value.hasOwnProperty('searchText') ?  a_value.searchText.toLowerCase() : a_value.toLowerCase();
           b_value = b_value.hasOwnProperty('searchText') ?  b_value.searchText.toLowerCase() : b_value.toLowerCase();
           if(a_value.trim() === '') a_value = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
