@@ -81,6 +81,8 @@ class EnhancedTable extends Component {
         };
       }).sort(sortBy('name'))
     };
+
+    this.handleRequestSort('', this.props.orderBy);
   }
 
   handleRequestSort = (event, property) => {

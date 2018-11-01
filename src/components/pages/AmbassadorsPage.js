@@ -244,7 +244,7 @@ class AmbassadorsPage extends Component {
   addLocationSearchText(cities){
     let searchText = '';
     cities.forEach((location) => {
-      searchText += `${(location.name).replace(/(^|\s)\S/g, l => l.toUpperCase())} - ${countries.getName(location.country)} `;
+      searchText += `${countries.getName(location.country)} - ${(location.name).replace(/(^|\s)\S/g, l => l.toUpperCase())}`;
     });
 
     return searchText;
@@ -394,7 +394,7 @@ class AmbassadorsPage extends Component {
                 <EnhancedTable
                   columnData={columnData}
                   data={data}
-                  orderBy="location"
+                  orderBy="Location"
                   showSearchColumns={false}
                   rowsPerPage={10}
                   isAdmin={false}
