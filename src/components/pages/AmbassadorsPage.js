@@ -3,6 +3,7 @@ import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import sortBy from 'sort-by';
 
 // Custom components
 import AppHeader from '../AppHeader';
@@ -143,7 +144,8 @@ class AmbassadorsPage extends Component {
         searchText: ambassador.telegram,
         value: (
           <a
-            href={`https://t.me/${(ambassador.telegram.trim().charAt(0) === '@') ? ambassador.telegram.trim().slice(1): ambassador.telegram.trim()}`}
+            href={`https://t.me/${(ambassador.telegram.trim().charAt(0) === '@') ?
+              ambassador.telegram.trim().slice(1): ambassador.telegram.trim()}`}
             target="_blank"
             rel="noopener noreferrer"
           >{ambassador.telegram}</a>
@@ -315,7 +317,7 @@ class AmbassadorsPage extends Component {
   }
 
   render() {
-    const { data } = this.state.ambassadors;
+    let { data } = this.state.ambassadors;
     const { ambassadorsSearch, merchantMarkers } = this.state;
 
     const ambassadorsMarkers = [];
@@ -345,6 +347,8 @@ class AmbassadorsPage extends Component {
         ambassadorsMarkers.push(marker);
       });
     });
+
+    data = data.sort(sortBy('location.searchText'));
 
     return (
       <div>
