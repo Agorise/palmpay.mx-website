@@ -3,6 +3,7 @@ import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import sortBy from 'sort-by';
 
 // Custom components
 import AppHeader from '../AppHeader';
@@ -258,7 +259,7 @@ class MerchantsPage extends Component {
   }
 
   render() {
-    const { data: merchantsData } = this.state.merchants;
+    let { data: merchantsData } = this.state.merchants;
     const { ambassadorsMarkers, merchantsSearch } = this.state;
 
     const merchantMarkers = merchantsSearch.map(merchant => {
@@ -275,6 +276,8 @@ class MerchantsPage extends Component {
       };
       return marker;
     });
+
+    merchantsData = merchantsData.sort(sortBy('location.searchText'));
 
 
     return (
