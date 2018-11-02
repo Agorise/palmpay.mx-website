@@ -397,3 +397,13 @@ header .col-md-10, header .col-md-10 > div {
 .search-books-input-wrapper > div {
   margin-left: 0 !important;
 }
+.text-box-top {
+  margin-top: 60px;
+}
+
+.text-box-bottom {
+  margin-bottom: 60px;
+}
+.uppercase-text {
+  text-transform: uppercase;
+}

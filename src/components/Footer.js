@@ -75,7 +75,7 @@ function Footer() {
             </ul>
           </Col>
           <Col className="brandTextFooter" md="4">
-            <p className="mb-0">
+            <p className="mb-0 uppercase-text">
               <span id="ft_lang1">
                 <FormattedMessage id="footer.title" />
               </span>
