@@ -350,6 +350,16 @@ class AmbassadorsPage extends Component {
 
     data = data.sort(sortBy('location.searchText'));
 
+    const textComponent = (
+      <span>
+        <FormattedHTMLMessage id="ambassadors.description1" />
+        <Link to="/merchants">
+        <FormattedMessage id="ambassadors.merchants_link_description" />
+        </Link>
+        <FormattedHTMLMessage id="ambassadors.description2" />
+      </span>
+    );
+
     return (
       <div>
         <AppHeader />
@@ -367,14 +377,6 @@ class AmbassadorsPage extends Component {
               <img src={LoadingGif} alt="Loading" style={loadingStyle} />
         ): (
           <div>
-            <p style={{ textAlign: 'left', marginRight: 20 }}>
-              <FormattedHTMLMessage id="ambassadors.description1" />
-              <Link to="/merchants">
-                <FormattedMessage id="ambassadors.merchants_link_description" />
-              </Link>
-              <FormattedHTMLMessage id="ambassadors.description2" />
-            </p>
-
             <Modal
               isOpen={this.state.mapsModalIsOpen}
               onRequestClose={() => this.closeMapsModal()}
@@ -396,6 +398,7 @@ class AmbassadorsPage extends Component {
               <div>
                 <br />
                 <EnhancedTable
+                  description={textComponent}
                   columnData={columnData}
                   data={data}
                   orderBy="Location"

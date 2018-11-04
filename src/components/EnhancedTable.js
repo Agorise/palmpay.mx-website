@@ -57,6 +57,7 @@ const defaultProps = {
   onEdit: () => {},
   onDelete: () => {},
   onMultipleDelete: () => {},
+  description: ''
 };
 
 /**
@@ -81,8 +82,6 @@ class EnhancedTable extends Component {
         };
       }).sort(sortBy('name'))
     };
-
-    this.handleRequestSort('', this.props.orderBy);
   }
 
   handleRequestSort = (event, property) => {
@@ -254,6 +253,7 @@ class EnhancedTable extends Component {
     return (
       <div style={styles.root}>
         <EnhancedSearch
+          textComponent={this.props.description}
           query={searchQuery}
           columns={searchColumns}
           showSearchColumns={showSearchColumns}

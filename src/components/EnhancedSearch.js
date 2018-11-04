@@ -42,7 +42,7 @@ const styles = theme => ({
 class EnhancedSearch extends Component {
 
 	render() {
-		const {query, onUpdateQuery, onColumnChange} = this.props;
+		const {query, onUpdateQuery, onColumnChange, textComponent} = this.props;
 		const { classes } = this.props;
 
 		return (
@@ -62,6 +62,7 @@ class EnhancedSearch extends Component {
 		            startAdornment: <InputAdornment position="start"><Search /></InputAdornment>,
 		          }}
 		        />
+            {textComponent}
 						<br />
             {this.props.showSearchColumns && this.props.columns.map(column => (
               <FormControlLabel
