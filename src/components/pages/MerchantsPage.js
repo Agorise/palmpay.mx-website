@@ -54,6 +54,7 @@ const mapsStyles = {
 
 const columnData = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
+  { id: 'phone', numeric: false, disablePadding: true, label: 'Contact' },
   { id: 'address', numeric: false, disablePadding: true, label: 'Address' },
   { id: 'location', numeric: false, disablePadding: false, label: 'Location' },
   { id: 'map', numeric: false, disablePadding: false, label: 'Maps', disableSearch: true}
