@@ -279,6 +279,15 @@ class MerchantsPage extends Component {
 
     merchantsData = merchantsData.sort(sortBy('location.searchText'));
 
+    const textComponent = (
+      <span>
+        <FormattedHTMLMessage id="merchants.description1" />
+        <Link to="/ambs">
+          <FormattedMessage id="merchants.ambassadors_link_description" />
+        </Link>
+        <FormattedHTMLMessage id="merchants.description2" />
+      </span>
+    );
 
     return (
       <div>
@@ -295,13 +304,6 @@ class MerchantsPage extends Component {
               <img src={LoadingGif} alt="Loading" style={loadingStyle} />
         ): (
           <div>
-            <p style={{ textAlign: 'left', marginRight: 20 }}>
-              <FormattedHTMLMessage id="merchants.description1" />
-              <Link to="/ambs">
-                <FormattedMessage id="merchants.ambassadors_link_description" />
-              </Link>
-              <FormattedHTMLMessage id="merchants.description2" />
-            </p>
 
             <Modal
               isOpen={this.state.mapsModalIsOpen}
@@ -325,6 +327,7 @@ class MerchantsPage extends Component {
               <div>
                 <br />
                 <EnhancedTable
+                  description={textComponent}
                   columnData={columnData}
                   data={merchantsData}
                   orderBy="account"

@@ -370,7 +370,6 @@ class AmbassadorsPage extends Component {
       <div className="row">
       <div className="col-md-10 mx-md-auto">
 
-
         <h2 className="ambassadorsTitle" style={centerStyle}><FormattedMessage id="ambassadors.title" /></h2>
         { /* Conditional Rendering */}
             {(this.state.loading) ? (
