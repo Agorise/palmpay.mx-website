@@ -20,6 +20,18 @@ import GOOGLE_MAPS_API from '../utils/constants';
 import MerchantPin from '../assets/img/map/merchant_pin.png';
 import AmbassadorPin from '../assets/img/map/ambassador_pin.png';
 
+import ambs_m1 from '../assets/img/map/cluster/ambassadors/m1.png';
+import ambs_m2 from '../assets/img/map/cluster/ambassadors/m2.png';
+import ambs_m3 from '../assets/img/map/cluster/ambassadors/m3.png';
+import ambs_m4 from '../assets/img/map/cluster/ambassadors/m4.png';
+import ambs_m5 from '../assets/img/map/cluster/ambassadors/m5.png';
+
+import mer_m1 from '../assets/img/map/cluster/merchants/m1.png';
+import mer_m2 from '../assets/img/map/cluster/merchants/m2.png';
+import mer_m3 from '../assets/img/map/cluster/merchants/m3.png';
+import mer_m4 from '../assets/img/map/cluster/merchants/m4.png';
+import mer_m5 from '../assets/img/map/cluster/merchants/m5.png';
+
 /**
  * This object is used for type checking the props of the component.
  */
@@ -83,7 +95,38 @@ const CustomLayerMap = compose(
         enableRetinaIcons
         gridSize={60}
         zoomOnClick={true}
-        imagePath='http://www.luminiasoft.com/images/merchant_cluster'
+        styles={[
+      	{
+      	  url: ambs_m1,
+      	  height: 53,
+      	  lineHeight: 53,
+      	  width: 53,
+      	},
+      	{
+      	  url: ambs_m2,
+      	  height: 56,
+      	  lineHeight: 56,
+      	  width: 56,
+      	},
+      	{
+      	  url: ambs_m3,
+      	  height: 66,
+      	  lineHeight: 66,
+      	  width: 66,
+      	},
+      	{
+      	  url: ambs_m4,
+      	  height: 78,
+      	  lineHeight: 78,
+      	  width: 78,
+      	},
+      	{
+      	  url: ambs_m5,
+      	  height: 90,
+      	  lineHeight: 90,
+      	  width: 90,
+      	},
+        ]}
       >
       {props.ambassadors.map( (marker, index) => (
         marker.withInfo ? (
@@ -115,7 +158,38 @@ const CustomLayerMap = compose(
         enableRetinaIcons
         gridSize={60}
         zoomOnClick={true}
-        imagePath='http://www.luminiasoft.com/images/ambassador_cluster'
+        styles={[
+      	{
+      	  url: mer_m1,
+      	  height: 53,
+      	  lineHeight: 53,
+      	  width: 53,
+      	},
+      	{
+      	  url: mer_m2,
+      	  height: 56,
+      	  lineHeight: 56,
+      	  width: 56,
+      	},
+      	{
+      	  url: mer_m3,
+      	  height: 66,
+      	  lineHeight: 66,
+      	  width: 66,
+      	},
+      	{
+      	  url: mer_m4,
+      	  height: 78,
+      	  lineHeight: 78,
+      	  width: 78,
+      	},
+      	{
+      	  url: mer_m5,
+      	  height: 90,
+      	  lineHeight: 90,
+      	  width: 90,
+      	},
+        ]}
       >
         {props.merchants.map( (marker, index) => (
           marker.withInfo ? (
