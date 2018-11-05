@@ -3,6 +3,7 @@ import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import sortBy from 'sort-by';
 
 // Custom components
 import AppHeader from '../AppHeader';
@@ -53,9 +54,9 @@ const mapsStyles = {
 
 const columnData = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
+  { id: 'phone', numeric: false, disablePadding: true, label: 'Contact' },
   { id: 'address', numeric: false, disablePadding: true, label: 'Address' },
-  { id: 'city', numeric: false, disablePadding: false, label: 'City' },
-  { id: 'country', numeric: false, disablePadding: false, label: 'Country' },
+  { id: 'location', numeric: false, disablePadding: false, label: 'Location' },
   { id: 'map', numeric: false, disablePadding: false, label: 'Maps', disableSearch: true}
 ];
 
@@ -203,6 +204,10 @@ class MerchantsPage extends Component {
         <div><b>Address</b>: {merchant.address}</div>
         {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
         </div>;
+      merchant.location = {
+        searchText: `${merchant.country} - ${merchant.city}`,
+        value: (merchant.city) ? `${merchant.city} - ${merchant.country}`: merchant.country
+      }
       merchant.map = <Button
         className="App-button"
         variant="contained"
@@ -255,7 +260,7 @@ class MerchantsPage extends Component {
   }
 
   render() {
-    const { data: merchantsData } = this.state.merchants;
+    let { data: merchantsData } = this.state.merchants;
     const { ambassadorsMarkers, merchantsSearch } = this.state;
 
     const merchantMarkers = merchantsSearch.map(merchant => {
@@ -273,6 +278,17 @@ class MerchantsPage extends Component {
       return marker;
     });
 
+    merchantsData = merchantsData.sort(sortBy('location.searchText'));
+
+    const textComponent = (
+      <span>
+        <FormattedHTMLMessage id="merchants.description1" />
+        <Link to="/ambs">
+          <FormattedMessage id="merchants.ambassadors_link_description" />
+        </Link>
+        <FormattedHTMLMessage id="merchants.description2" />
+      </span>
+    );
 
     return (
       <div>
@@ -289,13 +305,6 @@ class MerchantsPage extends Component {
               <img src={LoadingGif} alt="Loading" style={loadingStyle} />
         ): (
           <div>
-            <p style={{ textAlign: 'left', marginRight: 20 }}>
-              <FormattedHTMLMessage id="merchants.description1" />
-              <Link to="/ambs">
-                <FormattedMessage id="merchants.ambassadors_link_description" />
-              </Link>
-              <FormattedHTMLMessage id="merchants.description2" />
-            </p>
 
             <Modal
               isOpen={this.state.mapsModalIsOpen}
@@ -319,6 +328,7 @@ class MerchantsPage extends Component {
               <div>
                 <br />
                 <EnhancedTable
+                  description={textComponent}
                   columnData={columnData}
                   data={merchantsData}
                   orderBy="account"

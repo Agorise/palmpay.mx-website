@@ -3,6 +3,7 @@ import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import sortBy from 'sort-by';
 
 // Custom components
 import AppHeader from '../AppHeader';
@@ -143,7 +144,8 @@ class AmbassadorsPage extends Component {
         searchText: ambassador.telegram,
         value: (
           <a
-            href={`https://t.me/${(ambassador.telegram.trim().charAt(0) === '@') ? ambassador.telegram.trim().slice(1): ambassador.telegram.trim()}`}
+            href={`https://t.me/${(ambassador.telegram.trim().charAt(0) === '@') ?
+              ambassador.telegram.trim().slice(1): ambassador.telegram.trim()}`}
             target="_blank"
             rel="noopener noreferrer"
           >{ambassador.telegram}</a>
@@ -244,7 +246,7 @@ class AmbassadorsPage extends Component {
   addLocationSearchText(cities){
     let searchText = '';
     cities.forEach((location) => {
-      searchText += `${(location.name).replace(/(^|\s)\S/g, l => l.toUpperCase())} - ${countries.getName(location.country)} `;
+      searchText += `${countries.getName(location.country)} - ${(location.name).replace(/(^|\s)\S/g, l => l.toUpperCase())}`;
     });
 
     return searchText;
@@ -315,7 +317,7 @@ class AmbassadorsPage extends Component {
   }
 
   render() {
-    const { data } = this.state.ambassadors;
+    let { data } = this.state.ambassadors;
     const { ambassadorsSearch, merchantMarkers } = this.state;
 
     const ambassadorsMarkers = [];
@@ -346,6 +348,18 @@ class AmbassadorsPage extends Component {
       });
     });
 
+    data = data.sort(sortBy('location.searchText'));
+
+    const textComponent = (
+      <span>
+        <FormattedHTMLMessage id="ambassadors.description1" />
+        <Link to="/merchants">
+        <FormattedMessage id="ambassadors.merchants_link_description" />
+        </Link>
+        <FormattedHTMLMessage id="ambassadors.description2" />
+      </span>
+    );
+
     return (
       <div>
         <AppHeader />
@@ -356,21 +370,12 @@ class AmbassadorsPage extends Component {
       <div className="row">
       <div className="col-md-10 mx-md-auto">
 
-
         <h2 className="ambassadorsTitle" style={centerStyle}><FormattedMessage id="ambassadors.title" /></h2>
         { /* Conditional Rendering */}
             {(this.state.loading) ? (
               <img src={LoadingGif} alt="Loading" style={loadingStyle} />
         ): (
           <div>
-            <p style={{ textAlign: 'left', marginRight: 20 }}>
-              <FormattedHTMLMessage id="ambassadors.description1" />
-              <Link to="/merchants">
-                <FormattedMessage id="ambassadors.merchants_link_description" />
-              </Link>
-              <FormattedHTMLMessage id="ambassadors.description2" />
-            </p>
-
             <Modal
               isOpen={this.state.mapsModalIsOpen}
               onRequestClose={() => this.closeMapsModal()}
@@ -392,9 +397,10 @@ class AmbassadorsPage extends Component {
               <div>
                 <br />
                 <EnhancedTable
+                  description={textComponent}
                   columnData={columnData}
                   data={data}
-                  orderBy="nickname"
+                  orderBy="Location"
                   showSearchColumns={false}
                   rowsPerPage={10}
                   isAdmin={false}
