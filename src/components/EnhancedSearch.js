@@ -49,20 +49,28 @@ class EnhancedSearch extends Component {
 			<div className="search-books">
 				<div className="search-books-bar">
 					<div className="search-books-input-wrapper" style={{ textAlign: 'left', marginLeft: 20}}>
-						<TextField
-							style={{ textAlign: 'left', width: 350,borderColor: "#139657" }}
-							id="outlined-adornment-weight"
-							className={classNames(classes.margin, classes.textField)}
-		          variant="outlined"
-		          label="Search"
-              placeholder="Enter search term"
-		          value={query}
-		          onChange={(event) => onUpdateQuery(event.target.value)}
-		          InputProps={{
-		            startAdornment: <InputAdornment position="start"><Search /></InputAdornment>,
-		          }}
-		        />
-            {textComponent}
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <TextField
+        							style={{ textAlign: 'left', width: 350,borderColor: "#139657" }}
+        							id="outlined-adornment-weight"
+        							className={classNames(classes.margin, classes.textField)}
+        		          variant="outlined"
+        		          label="Search"
+                      placeholder="Enter search term"
+        		          value={query}
+        		          onChange={(event) => onUpdateQuery(event.target.value)}
+        		          InputProps={{
+        		            startAdornment: <InputAdornment position="start"><Search /></InputAdornment>,
+        		          }}
+        		        />
+                  </td>
+                  <td>{textComponent}</td>
+                </tr>
+              </tbody>
+            </table>
 						<br />
             {this.props.showSearchColumns && this.props.columns.map(column => (
               <FormControlLabel
