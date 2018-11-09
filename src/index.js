@@ -24,7 +24,7 @@ const messages = {
     'es': messages_es
 };
 
-const language = 'es';
+const language = 'en';
 
 // Add IntlProvider to make the internationalization functions visible in all
 // our components.
