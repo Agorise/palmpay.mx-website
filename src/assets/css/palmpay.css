@@ -407,3 +407,8 @@ header .col-md-10, header .col-md-10 > div {
 .uppercase-text {
   text-transform: uppercase;
 }
+
+.row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
