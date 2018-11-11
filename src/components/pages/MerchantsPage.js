@@ -54,9 +54,11 @@ const mapsStyles = {
 
 const columnData = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
-  { id: 'phone', numeric: false, disablePadding: true, label: 'Contact' },
   { id: 'address', numeric: false, disablePadding: true, label: 'Address' },
-  { id: 'location', numeric: false, disablePadding: false, label: 'Location' },
+  { id: 'phone', numeric: false, disablePadding: true, label: 'Phone' },
+  { id: 'link', numeric: false, disablePadding: false, label: 'Website' },
+  { id: 'telegram', numeric: false, disablePadding: true, label: 'telegram' },
+  { id: 'website', numeric: false, disablePadding: true, label: 'website' },
   { id: 'map', numeric: false, disablePadding: false, label: 'Maps', disableSearch: true}
 ];
 
@@ -204,10 +206,13 @@ class MerchantsPage extends Component {
         <div><b>Address</b>: {merchant.address}</div>
         {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
         </div>;
-      merchant.location = {
-        searchText: `${merchant.country} - ${merchant.city}`,
-        value: (merchant.city) ? `${merchant.city} - ${merchant.country}`: merchant.country
-      }
+      merchant.link = {
+        searchText: stripProtocol(merchant.website),
+        value: (
+          <a target="_blank" rel="noopener noreferrer"
+          href={merchant.website}>{stripProtocol(merchant.website)}</a>
+        )
+      };
       merchant.map = <Button
         className="App-button"
         variant="contained"
