@@ -49,12 +49,9 @@ class EnhancedSearch extends Component {
 			<div className="search-books">
 				<div className="search-books-bar">
 					<div className="search-books-input-wrapper" style={{ textAlign: 'left', marginLeft: 20}}>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <TextField
-        							style={{ textAlign: 'left', width: 350,borderColor: "#139657" }}
+<div className="row">
+                   <div className="col-md-4"> <TextField
+        							style={{ textAlign: 'left', width: '100%',borderColor: "#139657" }}
         							id="outlined-adornment-weight"
         							className={classNames(classes.margin, classes.textField)}
         		          variant="outlined"
@@ -65,12 +62,10 @@ class EnhancedSearch extends Component {
         		          InputProps={{
         		            startAdornment: <InputAdornment position="start"><Search /></InputAdornment>,
         		          }}
-        		        />
-                  </td>
-                  <td>{textComponent}</td>
-                </tr>
-              </tbody>
-            </table>
+        		        /> </div>
+
+                 <div className="col-md-8"> {textComponent}</div>
+             </div>
 						<br />
             {this.props.showSearchColumns && this.props.columns.map(column => (
               <FormControlLabel
