@@ -55,6 +55,8 @@ const mapsStyles = {
 const columnData = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'address', numeric: false, disablePadding: true, label: 'Address' },
+  { id: 'city', numeric: false, disablePadding: true, label: 'City' },
+  { id: 'country', numeric: false, disablePadding: true, label: 'Country' },
   { id: 'phone', numeric: false, disablePadding: true, label: 'Phone' },
   { id: 'link', numeric: false, disablePadding: false, label: 'Website' },
   { id: 'telegram', numeric: false, disablePadding: true, label: 'telegram' },
@@ -225,6 +227,10 @@ class MerchantsPage extends Component {
           href={merchant.website}>{stripProtocol(merchant.website)}</a>
         )
       };
+      merchant.location = {
+        searchText: `${merchant.country} - ${merchant.city}`,
+        value: (merchant.city) ? `${merchant.city} - ${merchant.country}`: merchant.country
+      }
       merchant.map = <Button
         className="App-button"
         variant="contained"
@@ -284,6 +290,15 @@ class MerchantsPage extends Component {
       const infoDescription = <div>
       <div><b>Address</b>: {merchant.address}</div>
       {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
+      {(merchant.telegram_original) && (<div><b>Telegram</b>:
+        <a
+          href={`https://t.me/${(merchant.telegram_original.trim().charAt(0) === '@') ? merchant.telegram_original.trim().slice(1): merchant.telegram_original.trim()}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >{merchant.telegram_original}</a>
+        </div>)}
+      {(merchant.website) && (<div><b>Website:</b>: <a target="_blank" rel="noopener noreferrer"
+        href={merchant.website}>{stripProtocol(merchant.website)}</a></div>)}
       </div>;
       const marker = {
         lat: merchant.lat,
