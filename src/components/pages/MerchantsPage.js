@@ -59,8 +59,8 @@ const columnData = [
   { id: 'country', numeric: false, disablePadding: true, label: 'Country' },
   { id: 'phone', numeric: false, disablePadding: true, label: 'Phone' },
   { id: 'link', numeric: false, disablePadding: false, label: 'Website' },
-  { id: 'telegram', numeric: false, disablePadding: true, label: 'telegram' },
-  { id: 'website', numeric: false, disablePadding: true, label: 'website' },
+  { id: 'telegram', numeric: false, disablePadding: true, label: 'Telegram' },
+  { id: 'website', numeric: false, disablePadding: true, label: 'Website' },
   { id: 'map', numeric: false, disablePadding: false, label: 'Maps', disableSearch: true}
 ];
 
@@ -208,18 +208,24 @@ class MerchantsPage extends Component {
         <div><b>Address</b>: {merchant.address}</div>
         {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
         </div>;
-      merchant.telegram_original = merchant.telegram;
-      merchant.telegram = {
-        searchText: merchant.telegram,
-        value: (
-          <a
-            href={`https://t.me/${(merchant.telegram.trim().charAt(0) === '@') ?
-              merchant.telegram.trim().slice(1): merchant.telegram.trim()}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >{merchant.telegram}</a>
-        )
-      };
+      if(merchant.telegram){
+        merchant.telegram_original = merchant.telegram;
+        merchant.telegram = {
+          searchText: merchant.telegram,
+          value: (
+            <a
+              href={`https://t.me/${(merchant.telegram.trim().charAt(0) === '@') ?
+                merchant.telegram.trim().slice(1): merchant.telegram.trim()}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >{merchant.telegram}</a>
+          )
+        };
+      }
+      else{
+
+      }
+
       merchant.link = {
         searchText: stripProtocol(merchant.website),
         value: (

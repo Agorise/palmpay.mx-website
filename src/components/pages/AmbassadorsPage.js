@@ -205,6 +205,15 @@ class AmbassadorsPage extends Component {
       const infoDescription = <div>
       <div><b>Address</b>: {merchant.address}</div>
       {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
+      {(merchant.telegram) && (<div><b>Telegram</b>:
+        <a
+          href={`https://t.me/${(merchant.telegram.trim().charAt(0) === '@') ? merchant.telegram.trim().slice(1): merchant.telegram.trim()}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >{merchant.telegram}</a>
+        </div>)}
+      {(merchant.website) && (<div><b>Website:</b>: <a target="_blank" rel="noopener noreferrer"
+        href={merchant.website}>{stripProtocol(merchant.website)}</a></div>)}
       </div>;
       const marker = {
         lat: merchant.lat,
