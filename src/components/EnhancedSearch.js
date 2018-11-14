@@ -50,7 +50,7 @@ class EnhancedSearch extends Component {
 				<div className="search-books-bar">
 					<div className="search-books-input-wrapper" style={{ textAlign: 'left', marginLeft: 20}}>
 <div className="row">
-                   <div className="col-md-4"> <TextField
+                   <div className="col-md-4 box-search"> <TextField
         							style={{ textAlign: 'left', width: '100%',borderColor: "#139657" }}
         							id="outlined-adornment-weight"
         							className={classNames(classes.margin, classes.textField)}
