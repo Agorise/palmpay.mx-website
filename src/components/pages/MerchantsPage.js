@@ -55,12 +55,9 @@ const mapsStyles = {
 const columnData = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'address', numeric: false, disablePadding: true, label: 'Address' },
-  { id: 'city', numeric: false, disablePadding: true, label: 'City' },
-  { id: 'country', numeric: false, disablePadding: true, label: 'Country' },
   { id: 'phone', numeric: false, disablePadding: true, label: 'Phone' },
-  { id: 'link', numeric: false, disablePadding: false, label: 'Website' },
   { id: 'telegram', numeric: false, disablePadding: true, label: 'Telegram' },
-  { id: 'website', numeric: false, disablePadding: true, label: 'Website' },
+  { id: 'link', numeric: false, disablePadding: false, label: 'Website' },
   { id: 'map', numeric: false, disablePadding: false, label: 'Maps', disableSearch: true}
 ];
 
@@ -242,7 +239,8 @@ class MerchantsPage extends Component {
         variant="contained"
         style={{
             backgroundColor: "#139657",
-            color: 'white'
+            color: 'white',
+            whiteSpace: 'nowrap'
         }}
         onClick={() => this.openMaps(
           merchant.name,
