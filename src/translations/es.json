@@ -73,13 +73,13 @@
   "marketing.button.promotional_displays": "Promotional Displays",
   "marketing.accordion.promotional_displays1": "<a target='_blank' rel='noopener noreferrer' href='https://keybase.io/team/Agorise' class='list-group-item list-group-item-action flex-column align-items-start'> <div class='d-flex w-100 justify-content-between'> <h5 class='mb-1'> Logos, Advertising images, Stickers and Merchandise, etc. (in the /PalmPay folder) </h5> </div> <p class='mb-1'>https://keybase.io/team/Agorise</p> </a>",
 
-  "ambassadors.title": "Ambassadors",
-  "ambassadors.merchants_link_description": "place of business",
-  "ambassadors.description1": "PalmPay Ambassadors are located in your city, or very near to you. Their job is to teach topics concerning Cryptocurrencies and Blockchains. Most offer local Meetups and Workshops too. So, if you are interested in these topics and would like to learn more, or even accept Cryptocurrencies at your ",
-  "ambassadors.description2": ", then be sure to contact a PalmPay Ambassador near you. If you are having trouble finding an Ambassador or would like to apply, feel free to <a target='_blank' rel='noopener noreferrer' href='https://t.me/Agorise'>contact us on Telegram</a> any time, we are glad to assist.",
+  "ambassadors.title": "Embajadores",
+  "ambassadors.merchants_link_description": "lugar de negocios",
+  "ambassadors.description1": "Los embajadores de PalmPay están ubicados en su ciudad o muy cerca de usted. Su trabajo es enseñar temas relacionados con las criptomonedas y las cadenas de bloques. La mayoría ofrece también reuniones y talleres locales. Por lo tanto, si está interesado en estos temas y desea obtener más información, o incluso aceptar Cryptocurrencies en su ",
+  "ambassadors.description2": ", entonces asegúrese de contactar a un embajador de PalmPay cerca de usted. Si tiene problemas para encontrar un Embajador o le gustaría presentar una solicitud, no dude en <a target='_blank' rel='noopener noreferrer' href='https://t.me/Agorise'>contáctenos en Telegram</a> cualquier momento, estamos encantados de ayudarle.",
 
-  "merchants.title": "Merchants",
-  "merchants.ambassadors_link_description": "PalmPay Ambassadors",
-  "merchants.description1": "PalmPay merchants are the backbone of the new Crypto Economy. If you are looking for businesses that will accept your Cryptocurrency, then just use the Search and Map data below. More merchants will be added here as the ",
-  "merchants.description2": " inform us. If you need help, just <a target='_blank' rel='noopener noreferrer' href='https://t.me/Agorise'>join us on Telegram</a> and we will be glad to assist you."
+  "merchants.title": "Mercantes",
+  "merchants.ambassadors_link_description": "Embajadores PalmPay",
+  "merchants.description1": "Los comerciantes de PalmPay son la columna vertebral de la nueva Crypto Economy. Si está buscando negocios que acepten su Cryptocurrency, simplemente use los datos de Búsqueda y Mapa a continuación. Más comerciantes serán agregados aquí como el ",
+  "merchants.description2": " informenos. Si necesitas ayuda, solo <a target='_blank' rel='noopener noreferrer' href='https://t.me/Agorise'>únete a nosotros en Telegram</a> y estaremos encantados de atenderte."
 }
