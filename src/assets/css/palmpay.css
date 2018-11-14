@@ -412,3 +412,13 @@ header .col-md-10, header .col-md-10 > div {
   margin-right: 0 !important;
   margin-left: 0 !important;
 }
+
+.box-search {
+  padding: 0;
+  margin: 0;
+}
+
+.box-search > div {
+  padding: 0;
+  margin: 0;
+}
