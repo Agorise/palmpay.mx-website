@@ -42,6 +42,18 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
     }),
   },
+  iOSSwitchBaseYellow: {
+    '&$iOSChecked': {
+      color: theme.palette.common.white,
+      '& + $iOSBar': {
+        backgroundColor: "#fdcf09",
+      },
+    },
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+      easing: theme.transitions.easing.sharp,
+    }),
+  },
   iOSChecked: {
     transform: 'translateX(15px)',
     '& + $iOSBar': {
@@ -116,6 +128,24 @@ class LayerMapSwitches extends React.Component {
             }
             label="Merchants"
           />
+          <FormControlLabel
+            control={
+              <Switch
+                classes={{
+                  switchBase: classes.iOSSwitchBaseYellow,
+                  bar: classes.iOSBar,
+                  icon: classes.iOSIcon,
+                  iconChecked: classes.iOSIconChecked,
+                  checked: classes.iOSChecked,
+                }}
+                disableRipple
+                checked={this.props.tellers}
+                onChange={this.props.onChange('tellerLayer')}
+                value="tellers"
+              />
+            }
+            label="Tellers"
+          />
         </div>
       </FormGroup>
     );
@@ -126,12 +156,14 @@ LayerMapSwitches.propTypes = {
   classes: PropTypes.object.isRequired,
   ambassadors: PropTypes.bool,
   merchants: PropTypes.bool,
+  tellers: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
 };
 
 LayerMapSwitches.defaultProps = {
   ambassadors: true,
-  merchants: true
+  merchants: true,
+  tellers: true
 };
 
 export default withStyles(styles)(LayerMapSwitches);

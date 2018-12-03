@@ -21,6 +21,8 @@ import Countries from 'country-list';
 import LoadingGif from '../../assets/img/loading_icon.gif';
 import MerchantPin from '../../assets/img/map/merchant_pin.png';
 
+import { WHICH_OPTIONS } from '../../utils/constants';
+
 import "./MerchantsPage.css";
 
 // List of countries
@@ -78,6 +80,7 @@ class MerchantsPage extends Component {
       },
       merchantsSearch: [],
       ambassadorsMarkers: [],
+      tellersMarkers: [],
       loading: true,
       rowsPerPage: [100,200,300],
       numberOfRows: 100,
@@ -166,6 +169,128 @@ class MerchantsPage extends Component {
 
     // Once both return, update the state
     app.setState({ ambassadorsMarkers: markers });
+  };
+
+  /**
+   * @description Get tellers from the web service
+   * @param {number} [limit=10] - Max items to be returned.
+   * @param {number} [skip=0] - Start index search
+   */
+  getTellers = async (limit = 50, skip = 0) => {
+    const app = this;
+    // Initially we don't know how much the total value is, so to make sure we enter the loop
+    // at least once we're just setting it to be 1
+    let total = 1;
+
+    const tellers = Client.service('api/v2/tellers');
+    this.setState({loading: true});
+    let result;
+    while(skip < total){
+      let partialResponse = await tellers.find({
+        query: {
+          //$sort: { account: 1 },
+          $limit: limit,
+          $skip: skip
+        }
+      });
+      total = partialResponse.total;
+      result === undefined ? result = partialResponse : partialResponse.data.map(this.fillResults(result));
+      skip = skip + limit;
+    }
+
+    result.data.forEach(function(tellers){
+      if(tellers.city !== undefined) tellers.city = (tellers.city).replace(/(^|\s)\S/g, l => l.toUpperCase());
+      if(tellers.country !== undefined) tellers.country = countries.getName(tellers.country);
+    });
+
+    result.data.map(teller => {
+      const infoDescription = <div>
+        <div><b>Address</b>: {teller.address}</div>
+        {(teller.phone) && (<div><b>Phone</b>: {teller.phone}</div>)}
+        </div>;
+      if(teller.telegram){
+        teller.telegram_original = teller.telegram;
+        teller.telegram = {
+          searchText: teller.telegram_original,
+          value: (
+            <a
+              href={`https://t.me/${(teller.telegram_original.trim().charAt(0) === '@') ?
+                teller.telegram_original.trim().slice(1): teller.telegram_original.trim()}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >{teller.telegram}</a>
+          )
+        };
+      }
+
+      teller.link = {
+        searchText: stripProtocol(teller.url),
+        value: (
+          <a target="_blank" rel="noopener noreferrer"
+          href={teller.url}>{stripProtocol(teller.url)}</a>
+        )
+      };
+      teller.location = {
+        searchText: `${teller.country} - ${teller.city}`,
+        value: (teller.city) ? `${teller.city} - ${teller.country}`: teller.country
+      }
+      teller.map = <Button
+        className="App-button"
+        variant="contained"
+        style={{
+            backgroundColor: "#fdcf09",
+            color: 'white',
+            whiteSpace: 'nowrap'
+        }}
+        onClick={() => this.openMaps(teller.gt_name, app.getTellerMarker(teller))}
+      >Show on Map
+      </Button>;
+      return teller;
+    });
+
+    // Once both return, update the state
+    app.setState({
+      loading: false,
+      tellersMarkers: result.data
+    });
+  };
+
+  getTellerMarker = (teller) => {
+    const which = WHICH_OPTIONS.filter(w => w.id.toLowerCase() === teller.which.toLowerCase());
+      teller.which_value = ( teller.which && which.length > 0)  ?
+        which[0].value :
+        '';
+    const infoDescription = (
+      <div>
+        <div><b>Address</b>: {teller.address}</div>
+        {(teller.which) && (<div><b>Which:</b>: {teller.which}</div>)}
+        {(teller.bitshares_address) && (<div><b>BTS Account:</b>: {teller.bitshares_address}</div>)}
+        {(teller.address) && (<div><b>Address:</b>: {teller.address}</div>)}
+        {(teller.telegram_original) && (<div><b>Telegram</b>:
+          <a
+            href={`https://t.me/${(teller.telegram_original.trim().charAt(0) === '@') ? teller.telegram_original.trim().slice(1): teller.telegram_original.trim()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >{teller.telegram_original}</a>
+          </div>)
+        }
+        {(teller.keybase) && (<div><b>Keybase</b>: {teller.keybase}</div>)}
+        {(teller.whatsapp) && (<div><b>Whatsapp</b>: {teller.whatsapp}</div>)}
+        {(teller.viber) && (<div><b>Viber</b>: {teller.viber}</div>)}
+        {(teller.email) && (<div><b>Email</b>: {teller.email}</div>)}
+        {(teller.phone) && (<div><b>Phone</b>: {teller.phone}</div>)}
+        {(teller.url) && (<div><b>URL:</b>: <a target="_blank" rel="noopener noreferrer"
+          href={teller.url}>{stripProtocol(teller.url)}</a></div>)}
+      </div>
+    );
+    const marker = {
+      lat: teller.lat,
+      lng: teller.lon,
+      withInfo: true,
+      infoTitle: teller.gt_name,
+      infoDescription: infoDescription,
+    };
+    return marker;
   };
 
   /**
@@ -383,6 +508,7 @@ class MerchantsPage extends Component {
                 merchants={merchantMarkers}
                 ambassadorsLayer={false}
                 merchantsLayer={true}
+                tellersLayer={false}
                 mapHeight={'600px'}
                 showControls={this.state.mapsModalIsOpen}
               />
