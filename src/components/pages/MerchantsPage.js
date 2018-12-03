@@ -508,6 +508,7 @@ class MerchantsPage extends Component {
                 merchants={merchantMarkers}
                 ambassadorsLayer={false}
                 merchantsLayer={true}
+                tellersLayer={false}
                 mapHeight={'600px'}
                 showControls={this.state.mapsModalIsOpen}
               />
