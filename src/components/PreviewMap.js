@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import GOOGLE_MAPS_API from '../utils/constants';
+import { GOOGLE_MAPS_API } from '../utils/constants';
 import { compose, withStateHandlers } from 'recompose';
 import {
   withScriptjs,
