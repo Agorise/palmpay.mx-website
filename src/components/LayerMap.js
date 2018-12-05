@@ -308,19 +308,6 @@ CustomLayerMap.propTypes = propTypes;
 // Assign default values to the optional props
 CustomLayerMap.defaultProps = defaultProps;
 
-/**
- * This object is used for type checking the props of the component.
- */
-const propTypesLayerMap = {
-  ambassadorsLayer: PropTypes.bool,
-  merchantsLayer: PropTypes.bool,
-  showControls: PropTypes.bool,
-  mapHeight: PropTypes.string,
-  ambassadors: PropTypes.array,
-  merchants: PropTypes.array,
-  tellers: PropTypes.array,
-};
-
 // Type checking the props of the component
 CustomLayerMap.propTypes = propTypes;
 // Assign default values to the optional props

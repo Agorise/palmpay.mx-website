@@ -204,25 +204,6 @@ class MerchantsPage extends Component {
     });
 
     result.data.map(teller => {
-      const infoDescription = <div>
-        <div><b>Address</b>: {teller.address}</div>
-        {(teller.phone) && (<div><b>Phone</b>: {teller.phone}</div>)}
-        </div>;
-      if(teller.telegram){
-        teller.telegram_original = teller.telegram;
-        teller.telegram = {
-          searchText: teller.telegram_original,
-          value: (
-            <a
-              href={`https://t.me/${(teller.telegram_original.trim().charAt(0) === '@') ?
-                teller.telegram_original.trim().slice(1): teller.telegram_original.trim()}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >{teller.telegram}</a>
-          )
-        };
-      }
-
       teller.link = {
         searchText: stripProtocol(teller.url),
         value: (
