@@ -348,12 +348,7 @@ class MerchantsPage extends Component {
             color: 'white',
             whiteSpace: 'nowrap'
         }}
-        onClick={() => this.openMaps(
-          merchant.name,
-          infoDescription,
-          merchant.lat,
-          merchant.lon
-        )}
+        onClick={() => this.openMaps(merchant.name, app.getMerchantMarker(merchant))}
       >Show on Map
       </Button>;
       return merchant;
@@ -378,26 +373,18 @@ class MerchantsPage extends Component {
      });
   }
 
-  openMaps(name, address, lat, lon){
+  openMaps(name, marker){
     this.setState({
       mapsTitle: name,
-      mapsDescription: address,
-      mapsLat: lat,
-      mapsLon: lon,
+      mapsDescription: marker.infoDescription,
+      mapsLat: marker.lat,
+      mapsLon: marker.lng,
       mapsModalIsOpen: true
     });
   }
 
-  handleSearchChange(data){
-    this.setState({ merchantsSearch: data });
-  }
-
-  render() {
-    let { data: merchantsData } = this.state.merchants;
-    const { ambassadorsMarkers, merchantsSearch } = this.state;
-
-    const merchantMarkers = merchantsSearch.map(merchant => {
-      const infoDescription = <div>
+  getMerchantMarker = (merchant) => {
+    const infoDescription = <div>
       <div><b>Address</b>: {merchant.address}</div>
       {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
       {(merchant.telegram_original) && (<div><b>Telegram</b>:
@@ -409,15 +396,27 @@ class MerchantsPage extends Component {
         </div>)}
       {(merchant.website) && (<div><b>Website:</b>: <a target="_blank" rel="noopener noreferrer"
         href={merchant.website}>{stripProtocol(merchant.website)}</a></div>)}
-      </div>;
-      const marker = {
-        lat: merchant.lat,
-        lng: merchant.lon,
-        withInfo: true,
-        infoTitle: merchant.name,
-        infoDescription: infoDescription,
-      };
-      return marker;
+    </div>;
+    const marker = {
+      lat: merchant.lat,
+      lng: merchant.lon,
+      withInfo: true,
+      infoTitle: merchant.name,
+      infoDescription: infoDescription,
+    };
+    return marker;
+  };
+
+  handleSearchChange(data){
+    this.setState({ merchantsSearch: data });
+  }
+
+  render() {
+    let { data: merchantsData } = this.state.merchants;
+    const { ambassadorsMarkers, merchantsSearch } = this.state;
+
+    const merchantMarkers = merchantsSearch.map(merchant => {
+      return this.getMerchantMarker(merchant);
     });
 
     merchantsData = merchantsData.sort(sortBy('location.searchText'));
