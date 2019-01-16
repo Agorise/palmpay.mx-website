@@ -357,7 +357,7 @@ class AmbassadorsPage extends Component {
       });
     });
 
-    data = data.sort(sortBy('location.searchText'));
+    data = data.sort(sortBy('nickname'));
 
     const textComponent = (
       <span>

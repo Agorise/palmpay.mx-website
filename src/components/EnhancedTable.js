@@ -219,18 +219,27 @@ class EnhancedTable extends Component {
 
     // Logic of search query and columns
     if(searchQuery.length > 0) {
-      data = data.filter((item) => {
-        let insert = false;
 
+      // Remove white spaces and wrong "" split
+      const queryTerms = searchQuery.split(' ').filter(value => value !== '');
+
+      data = data.filter((item) => {
+
+        const insertArray = [];
+        // Implement hardcoded AND query over each column
+        // Iterate over each search term
+        queryTerms.forEach(searchItem => {
+          let insert = false;
           // Iterate over the search column select boxes
           searchColumns.map(column => {
             try {
               if( column.checked && (item[column.name] !== undefined) ) {
-
-                if(item[column.name].hasOwnProperty('searchText') && item[column.name].searchText.toLowerCase().indexOf(searchQuery.toLowerCase().trim()) !== -1){
+                if(item[column.name].hasOwnProperty('searchText') &&
+                  item[column.name].searchText.toLowerCase().indexOf(searchItem.toLowerCase().trim()) !== -1
+                ){
                   insert = true;
                 }
-                else if(item[column.name].toLowerCase().indexOf(searchQuery.toLowerCase().trim()) !== -1){
+                else if(item[column.name].toLowerCase().indexOf(searchItem.toLowerCase().trim()) !== -1){
                   insert = true;
                 }
               }
@@ -241,7 +250,11 @@ class EnhancedTable extends Component {
             return column;
           });
 
-        if(insert){
+          insertArray.push(insert);
+        });
+
+        // AND logic
+        if(insertArray.filter(item => !item).length === 0){
           return item;
         }
         return false;

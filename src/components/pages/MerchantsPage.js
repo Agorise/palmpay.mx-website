@@ -419,7 +419,7 @@ class MerchantsPage extends Component {
       return this.getMerchantMarker(merchant);
     });
 
-    merchantsData = merchantsData.sort(sortBy('location.searchText'));
+    merchantsData = merchantsData.sort(sortBy('name'));
 
     const textComponent = (
       <span>
