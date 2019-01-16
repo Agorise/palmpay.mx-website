@@ -200,6 +200,33 @@ class EnhancedTable extends Component {
     this.props.onSearchChange(data);
   };
 
+  // Sort the passed data based on the current component state.
+  sortData = (data) => {
+    const orderBy = this.state.orderBy;
+    const order = this.state.order;
+
+    data =
+      order === 'desc'
+        ? data.sort((a, b) => {
+          let a_value = (a[orderBy] !== undefined) ? a[orderBy]: '';
+          let b_value = (b[orderBy] !== undefined) ? b[orderBy]: '';
+          a_value = a_value.hasOwnProperty('searchText') ?  a_value.searchText.toLowerCase() : a_value.toLowerCase();
+          b_value = b_value.hasOwnProperty('searchText') ?  b_value.searchText.toLowerCase() : b_value.toLowerCase();
+          return (b_value < a_value) ? -1 : 1;
+        })
+        : data.sort((a, b) => {
+          let a_value = (a[orderBy] !== undefined) ? a[orderBy]: '';
+          let b_value = (b[orderBy] !== undefined) ? b[orderBy]: '';
+          a_value = a_value.hasOwnProperty('searchText') ?  a_value.searchText.toLowerCase() : a_value.toLowerCase();
+          b_value = b_value.hasOwnProperty('searchText') ?  b_value.searchText.toLowerCase() : b_value.toLowerCase();
+          if(a_value.trim() === '') a_value = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
+          if(b_value.trim() === '') b_value = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
+          return (a_value < b_value) ? -1 : 1;
+        }
+      );
+    return data;
+  };
+
   /*
    * Update the search column select box
    */
@@ -261,7 +288,7 @@ class EnhancedTable extends Component {
       });
     }
 
-
+    data = this.sortData(data);
 
     return (
       <div style={styles.root}>
