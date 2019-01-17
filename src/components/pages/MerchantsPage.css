@@ -4,7 +4,7 @@
 .merchants_services .MuiNotchedOutline-focused-120 {
   border-color: rgb(19, 143, 82) !important;
 }
-
-.merchants_services table {
+.merchants_services table,
+.ambs_services table {
   min-width: 100% !important;
 }

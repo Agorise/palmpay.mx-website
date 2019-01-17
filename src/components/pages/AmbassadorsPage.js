@@ -374,7 +374,7 @@ class AmbassadorsPage extends Component {
         <AppHeader />
 
         <div id="maincontent">
-      <section data-spy="scroll" data-target="#mainNav" id="services">
+      <section data-spy="scroll" data-target="#mainNav" id="services" className="ambs_services">
       <div className="containerfix">
       <div className="row">
       <div className="col-md-10 mx-md-auto">
