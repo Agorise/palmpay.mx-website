@@ -473,6 +473,7 @@ class MerchantsPage extends Component {
                   columnData={columnData}
                   data={merchantsData}
                   orderBy="account"
+                  className="teste-let"
                   rowsPerPage={10}
                   showSearchColumns={false}
                   isAdmin={false}
