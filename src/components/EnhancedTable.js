@@ -169,33 +169,7 @@ class EnhancedTable extends Component {
 
     const searchQuery = query;
     const searchColumns = this.state.searchColumns;
-    const data = this.props.data.filter((item) => {
-      let insert = false;
-
-        // Iterate over the search column select boxes
-        searchColumns.map(column => {
-          try {
-            if( column.checked && (item[column.name] !== undefined) ) {
-
-              if(item[column.name].hasOwnProperty('searchText') && item[column.name].searchText.toLowerCase().indexOf(searchQuery.toLowerCase().trim()) !== -1){
-                insert = true;
-              }
-              else if(item[column.name].toLowerCase().indexOf(searchQuery.toLowerCase().trim()) !== -1){
-                insert = true;
-              }
-            }
-          }
-          catch(error) {
-            //console.error(error);
-          }
-          return column;
-        });
-
-      if(insert){
-        return item;
-      }
-      return false;
-    });
+    const data = this.filterData(this.props.data, searchQuery, searchColumns);
 
     this.props.onSearchChange(data);
   };
@@ -239,6 +213,48 @@ class EnhancedTable extends Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
+  filterData(data, searchQuery, searchColumns) {
+    // Remove white spaces and wrong "" split
+    const queryTerms = searchQuery.split(' ').filter(value => value !== '');
+
+    return data.filter((item) => {
+
+      const insertArray = [];
+      // Implement hardcoded AND query over each column
+      // Iterate over each search term
+      queryTerms.forEach(searchItem => {
+        let insert = false;
+        // Iterate over the search column select boxes
+        searchColumns.map(column => {
+          try {
+            if( column.checked && (item[column.name] !== undefined) ) {
+              if(item[column.name].hasOwnProperty('searchText') &&
+                item[column.name].searchText.toLowerCase().indexOf(searchItem.toLowerCase().trim()) !== -1
+              ){
+                insert = true;
+              }
+              else if(item[column.name].toLowerCase().indexOf(searchItem.toLowerCase().trim()) !== -1){
+                insert = true;
+              }
+            }
+          }
+          catch(error) {
+            //console.error(error);
+          }
+          return column;
+        });
+
+        insertArray.push(insert);
+      });
+
+      // AND logic
+      if(insertArray.filter(item => !item).length === 0){
+        return item;
+      }
+      return false;
+    });
+  }
+
   render() {
     let { data } = this.props;
     const { columnData, rowsPerPageOptions, showSearchColumns } = this.props;
@@ -246,46 +262,7 @@ class EnhancedTable extends Component {
 
     // Logic of search query and columns
     if(searchQuery.length > 0) {
-
-      // Remove white spaces and wrong "" split
-      const queryTerms = searchQuery.split(' ').filter(value => value !== '');
-
-      data = data.filter((item) => {
-
-        const insertArray = [];
-        // Implement hardcoded AND query over each column
-        // Iterate over each search term
-        queryTerms.forEach(searchItem => {
-          let insert = false;
-          // Iterate over the search column select boxes
-          searchColumns.map(column => {
-            try {
-              if( column.checked && (item[column.name] !== undefined) ) {
-                if(item[column.name].hasOwnProperty('searchText') &&
-                  item[column.name].searchText.toLowerCase().indexOf(searchItem.toLowerCase().trim()) !== -1
-                ){
-                  insert = true;
-                }
-                else if(item[column.name].toLowerCase().indexOf(searchItem.toLowerCase().trim()) !== -1){
-                  insert = true;
-                }
-              }
-            }
-            catch(error) {
-              //console.error(error);
-            }
-            return column;
-          });
-
-          insertArray.push(insert);
-        });
-
-        // AND logic
-        if(insertArray.filter(item => !item).length === 0){
-          return item;
-        }
-        return false;
-      });
+      data = this.filterData(data, searchQuery, searchColumns);
     }
 
     data = this.sortData(data);
