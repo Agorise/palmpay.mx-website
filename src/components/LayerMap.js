@@ -44,6 +44,10 @@ import tel_m3 from '../assets/img/map/cluster/tellers/m3.png';
 import tel_m4 from '../assets/img/map/cluster/tellers/m4.png';
 import tel_m5 from '../assets/img/map/cluster/tellers/m5.png';
 
+import { addProtocol, getProtocol } from '../utils/url';
+
+import { WHICH_OPTIONS } from '../utils/constants';
+
 // List of countries
 const countries = Countries();
 
@@ -58,8 +62,6 @@ const propTypes = {
   // Fix google maps modal problem
   showControls: PropTypes.bool
 };
-
-
 
 /**
  * This object sets default values to the optional props.
@@ -308,10 +310,27 @@ CustomLayerMap.propTypes = propTypes;
 // Assign default values to the optional props
 CustomLayerMap.defaultProps = defaultProps;
 
-// Type checking the props of the component
-CustomLayerMap.propTypes = propTypes;
-// Assign default values to the optional props
-CustomLayerMap.defaultProps = defaultProps;
+/**
+ * This object is used for type checking the props of the component.
+ */
+const propTypesLayerMap = {
+  ambassadorsLayer: PropTypes.bool,
+  merchantsLayer: PropTypes.bool,
+  showControls: PropTypes.bool,
+  mapHeight: PropTypes.string,
+  ambassadors: PropTypes.array,
+  merchants: PropTypes.array,
+  tellers: PropTypes.array,
+};
+
+/**
+ * This object sets default values to the optional props.
+ */
+const defaultPropsLayerMap = {
+  ambassadors: null,
+  merchants: null,
+  tellers: null
+};
 
 class LayerMap extends Component {
   constructor(props) {
@@ -330,9 +349,22 @@ class LayerMap extends Component {
    * @description Lifecycle event handler called just after the App loads into the DOM.
    */
   UNSAFE_componentWillMount() {
-    this.getAmbassadors();
-    this.getMerchants();
-    this.getTellers();
+    this.updateMarkers();
+  }
+
+  // Update markers based if props are informed
+  updateMarkers() {
+    if(!this.props.ambassadors) {
+      this.getAmbassadors();
+    }
+
+    if(!this.props.merchants) {
+      this.getMerchants();
+    }
+
+    if (!this.props.tellers) {
+      this.getTellers();
+    }
   }
 
   fillResults(result) {
@@ -496,25 +528,53 @@ class LayerMap extends Component {
       if(tellers.country !== undefined) tellers.country = countries.getName(tellers.country);
     });
 
-    const markers = result.data.map(merchant => {
-      const infoDescription = <div>
-      <div><b>Address</b>: {merchant.address}</div>
-      {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
-      {(merchant.telegram) && (<div><b>Telegram</b>:
-        <a
-          href={`https://t.me/${(merchant.telegram.trim().charAt(0) === '@') ? merchant.telegram.trim().slice(1): merchant.telegram.trim()}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >{merchant.telegram}</a>
-        </div>)}
-      {(merchant.url) && (<div><b>Website:</b>: <a target="_blank" rel="noopener noreferrer"
-        href={merchant.url}>{stripProtocol(merchant.url)}</a></div>)}
-      </div>;
+    const markers = result.data.map(teller => {
+      if(teller.telegram){
+        teller.telegram_original = teller.telegram;
+        teller.telegram = {
+          searchText: teller.telegram_original,
+          value: (
+            <a
+              href={`https://t.me/${(teller.telegram_original.trim().charAt(0) === '@') ?
+                teller.telegram_original.trim().slice(1): teller.telegram_original.trim()}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >{teller.telegram}</a>
+          )
+        };
+      }
+      const which = WHICH_OPTIONS.filter(w => w.id.toLowerCase() === teller.which.toLowerCase());
+        teller.which_value = ( teller.which && which.length > 0)  ?
+          which[0].value :
+          '';
+      const infoDescription = (
+        <div>
+          <div><b>Address</b>: {teller.address}</div>
+          {(teller.which) && (<div><b>Which:</b>: {teller.which}</div>)}
+          {(teller.bitshares_address) && (<div><b>BTS Account:</b>: {teller.bitshares_address}</div>)}
+          {(teller.address) && (<div><b>Address:</b>: {teller.address}</div>)}
+          {(teller.telegram_original) && (<div><b>Telegram</b>:
+            <a
+              href={`https://t.me/${(teller.telegram_original.trim().charAt(0) === '@') ? teller.telegram_original.trim().slice(1): teller.telegram_original.trim()}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >{teller.telegram_original}</a>
+            </div>)
+          }
+          {(teller.keybase) && (<div><b>Keybase</b>: {teller.keybase}</div>)}
+          {(teller.whatsapp) && (<div><b>Whatsapp</b>: {teller.whatsapp}</div>)}
+          {(teller.viber) && (<div><b>Viber</b>: {teller.viber}</div>)}
+          {(teller.email) && (<div><b>Email</b>: {teller.email}</div>)}
+          {(teller.phone) && (<div><b>Phone</b>: {teller.phone}</div>)}
+          {(teller.url) && (<div><b>URL:</b>: <a target="_blank" rel="noopener noreferrer"
+            href={addProtocol(teller.url, getProtocol(teller.url))}>{stripProtocol(teller.url)}</a></div>)}
+        </div>
+      );
       const marker = {
-        lat: merchant.lat,
-        lng: merchant.lon,
+        lat: teller.lat,
+        lng: teller.lon,
         withInfo: true,
-        infoTitle: merchant.gt_name,
+        infoTitle: teller.gt_name,
         infoDescription: infoDescription,
       };
       return marker;
@@ -530,13 +590,33 @@ class LayerMap extends Component {
   handleLayerChange = name => event => {
     this.setState({ [name]: event.target.checked });
     // Update any time changes
-    this.getAmbassadors();
-    this.getMerchants();
-    this.getTellers();
+    this.updateMarkers();
   };
 
   render() {
-    // create an array with marker components
+    const {
+      ambassadors: ambassadorsProps,
+      merchants: merchantsProps,
+      tellers: tellersProps
+    } = this.props;
+
+    let {
+      ambassadors,
+      merchants,
+      tellers
+    } = this.state;
+
+    if(ambassadorsProps) {
+      ambassadors = ambassadorsProps;
+    }
+
+    if(merchantsProps) {
+      merchants = merchantsProps;
+    }
+
+    if(tellersProps) {
+      tellers = tellersProps;
+    }
 
     return (
       <div>
@@ -551,9 +631,9 @@ class LayerMap extends Component {
           <div style={{ height: 56 }}></div>
         )}
         <CustomLayerMap
-          ambassadors={this.state.ambassadorLayer ? this.state.ambassadors: []}
-          merchants={this.state.merchantLayer ? this.state.merchants: []}
-          tellers={this.state.tellerLayer ? this.state.tellers: []}
+          ambassadors={this.state.ambassadorLayer ? ambassadors: []}
+          merchants={this.state.merchantLayer ? merchants: []}
+          tellers={this.state.tellerLayer ? tellers: []}
           mapZoom={3}
           mapCenter={{ lat: 0, lng: 0 }}
           loadingElement={<div style={{ height: `100%` }} />}
@@ -564,5 +644,10 @@ class LayerMap extends Component {
     );
   }
 }
+
+// Type checking the props of the component
+LayerMap.propTypes = propTypesLayerMap;
+// Assign default values to the optional props
+LayerMap.defaultProps = defaultPropsLayerMap;
 
 export default LayerMap;

@@ -357,7 +357,7 @@ class AmbassadorsPage extends Component {
       });
     });
 
-    data = data.sort(sortBy('location.searchText'));
+    data = data.sort(sortBy('nickname'));
 
     const textComponent = (
       <span>
@@ -374,7 +374,7 @@ class AmbassadorsPage extends Component {
         <AppHeader />
 
         <div id="maincontent">
-      <section data-spy="scroll" data-target="#mainNav" id="services">
+      <section data-spy="scroll" data-target="#mainNav" id="services" className="ambs_services">
       <div className="containerfix">
       <div className="row">
       <div className="col-md-10 mx-md-auto">

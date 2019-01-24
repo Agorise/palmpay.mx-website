@@ -307,10 +307,6 @@ class MerchantsPage extends Component {
     });
 
     result.data.map(merchant => {
-      const infoDescription = <div>
-        <div><b>Address</b>: {merchant.address}</div>
-        {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
-        </div>;
       if(merchant.telegram){
         merchant.telegram_original = merchant.telegram;
         merchant.telegram = {
@@ -419,7 +415,7 @@ class MerchantsPage extends Component {
       return this.getMerchantMarker(merchant);
     });
 
-    merchantsData = merchantsData.sort(sortBy('location.searchText'));
+    merchantsData = merchantsData.sort(sortBy('name'));
 
     const textComponent = (
       <span>
