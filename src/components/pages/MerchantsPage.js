@@ -307,10 +307,6 @@ class MerchantsPage extends Component {
     });
 
     result.data.map(merchant => {
-      const infoDescription = <div>
-        <div><b>Address</b>: {merchant.address}</div>
-        {(merchant.phone) && (<div><b>Phone</b>: {merchant.phone}</div>)}
-        </div>;
       if(merchant.telegram){
         merchant.telegram_original = merchant.telegram;
         merchant.telegram = {
